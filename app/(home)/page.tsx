@@ -19,7 +19,7 @@ const font = Poppins({
 });
 
 export default function Home() {
-  const { user } = auth();
+  const user = auth();
 
   return (
     <div className="relative h-full px-4 md:px-8 mx-auto">
@@ -36,7 +36,7 @@ export default function Home() {
             to search for tokens created by other users .Create a free account
             to get access to all presented benefits and more.
           </p>
-          {user && user.id ? (
+          {user && user.userId ? (
             <Button size="lg" asChild>
               <Link href="/dashboard">
                 Dashboard

@@ -3,15 +3,29 @@
 import { sidebarRoutes } from "@/routes/sidebar-routes";
 import { usePathname } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
+import { useRouter } from "next/navigation";
 
-export const SidebarList = () => {
+interface SidebarListProps {
+  onClick?: () => void;
+}
+
+export const SidebarList = ({ onClick }: SidebarListProps) => {
   const pathname = usePathname();
+  const router = useRouter();
   const routes = sidebarRoutes;
 
   return (
-    <ul className="flex flex-col gap-y-4">
+    <ul className="flex flex-col">
       {routes.map((route) => {
         const isActive = pathname === route.href;
+
+        const redirect = () => {
+          router.push(route.href);
+          if (onClick) {
+            onClick();
+          }
+        };
+
         return (
           <SidebarItem
             key={route.href}
@@ -19,6 +33,7 @@ export const SidebarList = () => {
             icon={route.icon}
             label={route.label}
             isActive={isActive}
+            redirect={redirect}
           />
         );
       })}
