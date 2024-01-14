@@ -13,7 +13,7 @@ datasource db {
 model Token {
   id       String  @id @default(uuid())
   name     String  @unique @db.Text
-  image    String?
+  imageUrl String?
   price    Float
   quantity Int     @default(1)
   userId   String
