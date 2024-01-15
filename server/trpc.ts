@@ -17,21 +17,8 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   return next({ ctx: { userId: ctx.userId } });
 });
 
-// // check if the user is signed in, otherwise throw a UNAUTHORIZED CODE
-// const isAuthed = t.middleware(({ next, ctx }) => {
-//   if (!ctx.auth.userId) {
-//     throw new TRPCError({ code: "UNAUTHORIZED" });
-//   }
-//   return next({
-//     ctx: {
-//       auth: ctx.auth,
-//     },
-//   });
-// });
-
 export const router = t.router;
 
 export const publicProcedure = t.procedure;
 
-// export this procedure to be used anywhere in your application
 export const privateProcedure = t.procedure.use(isAuthed);
