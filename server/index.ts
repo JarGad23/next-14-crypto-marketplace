@@ -1,22 +1,22 @@
 import * as z from "zod";
 import { privateProcedure, publicProcedure, router } from "./trpc";
-import { createCoinSchema } from "@/schemas";
+import { createTokenSchema } from "@/schemas";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/lib/db";
 
 export const appRouter = router({
   createToken: privateProcedure
-    .input(createCoinSchema)
+    .input(createTokenSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const { userId } = ctx;
-        const { name, price, quantity } = input;
+        const { name, price, quantity, imageUrl } = input;
 
         if (!userId) {
           throw new TRPCError({ code: "UNAUTHORIZED" });
         }
 
-        if (!name || !price || !quantity) {
+        if (!name || !price || !quantity || !imageUrl) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Missing required data",
@@ -41,11 +41,20 @@ export const appRouter = router({
             name,
             price,
             quantity,
+            imageUrl,
             userId,
           },
         });
 
-        return { token };
+        const userToken = await db.userTokens.create({
+          data: {
+            userId: token.userId,
+            tokenId: token.id,
+            userQuantityOfToken: token.quantity,
+          },
+        });
+
+        return { token, userToken };
       } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

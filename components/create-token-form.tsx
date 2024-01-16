@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { createCoinSchema } from "@/schemas";
+import { createTokenSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -17,8 +17,15 @@ import { Button } from "./ui/button";
 import { CardWrapper } from "./card-wrapper";
 import { trpc } from "@/app/_trpc/client";
 import { toast } from "sonner";
+import { FileUpload } from "./file-upload";
+import { useState } from "react";
+import Image from "next/image";
+import { X } from "lucide-react";
 
 export const CreateTokenForm = () => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [isEditingImage, setIsEditingImage] = useState(false);
+
   const { mutate: createToken, isLoading } = trpc.createToken.useMutation({
     onSuccess: () => {
       form.reset();
@@ -30,8 +37,8 @@ export const CreateTokenForm = () => {
     },
   });
 
-  const form = useForm<z.infer<typeof createCoinSchema>>({
-    resolver: zodResolver(createCoinSchema),
+  const form = useForm<z.infer<typeof createTokenSchema>>({
+    resolver: zodResolver(createTokenSchema),
     defaultValues: {
       name: "",
       quantity: undefined,
@@ -39,12 +46,12 @@ export const CreateTokenForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof createCoinSchema>) => {
-    createToken({ ...values });
+  const onSubmit = (values: z.infer<typeof createTokenSchema>) => {
+    createToken({ ...values, imageUrl });
   };
 
   return (
-    <CardWrapper titleLabel="Create Coin">
+    <CardWrapper titleLabel="Create Token">
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
@@ -102,6 +109,38 @@ export const CreateTokenForm = () => {
                 </FormItem>
               )}
             />
+            {imageUrl && !isEditingImage ? (
+              <div className="relative aspect-video">
+                <Button
+                  className="absolute top-2 right-2 z-40"
+                  variant="secondary"
+                  type="button"
+                  onClick={() => {
+                    setIsEditingImage(true), setImageUrl("");
+                  }}
+                >
+                  <X className="text-rose-500 h-6 w-6" />
+                </Button>
+                <Image
+                  className="object-cover bg-gray-500 transition"
+                  fill
+                  alt="Image"
+                  src={imageUrl}
+                />
+              </div>
+            ) : (
+              <div className="border-4 border-dashed">
+                <FileUpload
+                  endpoint="tokenImage"
+                  onChange={(url) => {
+                    if (url) {
+                      setImageUrl(url);
+                      setIsEditingImage(false);
+                    }
+                  }}
+                />
+              </div>
+            )}
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
             Create
