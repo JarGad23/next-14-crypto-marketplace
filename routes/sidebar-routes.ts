@@ -1,6 +1,7 @@
 import {
   CircleDollarSign,
   Coins,
+  Gem,
   LayoutDashboard,
   LucideIcon,
   ShoppingCart,
@@ -18,6 +19,11 @@ export const sidebarRoutes: SidebarRoute[] = [
     icon: LayoutDashboard,
     label: "Dashboard",
     href: "/dashboard",
+  },
+  {
+    icon: Gem,
+    label: "Wallet",
+    href: "/dashboard/wallet",
   },
   {
     icon: Coins,

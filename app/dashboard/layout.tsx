@@ -4,7 +4,7 @@ import { Sidebar } from "./_components/sidebar";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="relative h-full">
-      <div className="h-full w-56 hidden md:block fixed left-0">
+      <div className="h-full w-56 hidden md:block fixed left-0 z-50">
         <Sidebar />
       </div>
       <div className="relative md:pl-56">
