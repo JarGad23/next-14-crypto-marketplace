@@ -23,9 +23,14 @@ export const appRouter = router({
           });
         }
 
-        const existingToken = await db.token.findUnique({
+        const capitalizeName = name.charAt(0).toUpperCase() + name.substring(1);
+
+        const existingToken = await db.token.findFirst({
           where: {
-            name,
+            name: {
+              equals: name.charAt(0).toUpperCase() + name.substring(1),
+              mode: "insensitive",
+            },
           },
         });
 
@@ -38,7 +43,7 @@ export const appRouter = router({
 
         const token = await db.token.create({
           data: {
-            name,
+            name: capitalizeName,
             price,
             quantity,
             imageUrl,
