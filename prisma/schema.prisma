@@ -11,13 +11,27 @@ datasource db {
 }
 
 model Token {
-  id       String  @id @default(uuid())
-  name     String  @unique @db.Text
-  imageUrl String?
-  price    Float
-  quantity Int     @default(1)
-  userId   String
+  id         String       @id @default(uuid())
+  name       String       @unique @db.Text
+  imageUrl   String?
+  price      Float
+  quantity   Int          @default(1)
+  userId     String
+  userTokens UserTokens[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model UserTokens {
+  id                  String @id @default(uuid())
+  userId              String
+  tokenId             String
+  token               Token  @relation(fields: [tokenId], references: [id])
+  userQuantityOfToken Int    @default(0)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([userId, tokenId])
 }
