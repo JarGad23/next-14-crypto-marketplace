@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const createCoinSchema = z.object({
+export const createTokenSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
   }),
@@ -10,4 +10,5 @@ export const createCoinSchema = z.object({
   quantity: z.coerce.number().min(1, {
     message: "Minimum quantity is 1",
   }),
+  imageUrl: z.string(),
 });
