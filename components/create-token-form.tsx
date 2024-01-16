@@ -29,10 +29,10 @@ export const CreateTokenForm = () => {
   const { mutate: createToken, isLoading } = trpc.createToken.useMutation({
     onSuccess: () => {
       form.reset();
+      setImageUrl("");
       toast.success("Token created successfully");
     },
     onError: ({ message }) => {
-      form.reset();
       toast.error(message);
     },
   });
@@ -41,8 +41,9 @@ export const CreateTokenForm = () => {
     resolver: zodResolver(createTokenSchema),
     defaultValues: {
       name: "",
-      quantity: undefined,
-      price: undefined,
+      imageUrl: "",
+      price: NaN,
+      quantity: NaN,
     },
   });
 
@@ -129,17 +130,29 @@ export const CreateTokenForm = () => {
                 />
               </div>
             ) : (
-              <div className="border-4 border-dashed">
-                <FileUpload
-                  endpoint="tokenImage"
-                  onChange={(url) => {
-                    if (url) {
-                      setImageUrl(url);
-                      setIsEditingImage(false);
-                    }
-                  }}
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Image</FormLabel>
+                    <FormControl>
+                      <div className="dark:border-4 border-dashed">
+                        <FileUpload
+                          endpoint="tokenImage"
+                          onChange={(url) => {
+                            if (url) {
+                              setImageUrl(url);
+                              setIsEditingImage(false);
+                            }
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             )}
           </div>
           <Button type="submit" className="w-full" disabled={isLoading}>
