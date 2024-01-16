@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~@uploadthing/react/styles.css";
 
 html,
 body,
@@ -73,5 +74,3 @@ input[type="number"] {
     @apply bg-background text-foreground;
   }
 }
-
-@import "~@uploadthing/react/styles.css";
