@@ -11,19 +11,21 @@ datasource db {
 }
 
 model Token {
-  id         String       @id @default(uuid())
-  name       String       @unique @db.Text
-  imageUrl   String?
-  price      Float
-  quantity   Int          @default(1)
-  userId     String
-  userTokens UserTokens[]
+  id            String         @id @default(uuid())
+  name          String         @unique @db.Text
+  imageUrl      String?
+  price         Float
+  quantity      Int
+  creatorUserId String
+  userTokens    UserToken[]
+  transactions  Transaction[]
+  tokenForSales TokenForSale[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
-model UserTokens {
+model UserToken {
   id                  String @id @default(uuid())
   userId              String
   tokenId             String
@@ -34,4 +36,39 @@ model UserTokens {
   updated_at DateTime @updatedAt
 
   @@unique([userId, tokenId])
+}
+
+enum TransactionType {
+  Buy
+  Sell
+}
+
+model Transaction {
+  id              String          @id @default(uuid())
+  userId          String
+  tokenId         String
+  token           Token           @relation(fields: [tokenId], references: [id])
+  quantity        Int
+  pricePerToken   Float
+  sellerUserId    String
+  buyerUserId     String
+  transactionType TransactionType
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model TokenForSale {
+  id              String @id @default(uuid())
+  tokenId         String
+  token           Token  @relation(fields: [tokenId], references: [id])
+  sellerUserId    String
+  quantityForSale Int
+  pricePerToken   Float
+  soldQuantity    Int    @default(0)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([tokenId, sellerUserId])
 }
