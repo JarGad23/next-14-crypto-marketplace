@@ -51,7 +51,7 @@ export const appRouter = router({
           },
         });
 
-        const userToken = await db.userToken.create({
+        const userToken = await db.userWallet.create({
           data: {
             userId: token.creatorUserId,
             tokenId: token.id,
@@ -66,6 +66,36 @@ export const appRouter = router({
           message: error.message,
         });
       }
+    }),
+  getUserWallet: privateProcedure
+    .input(
+      z.object({
+        walletUserId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { walletUserId } = input;
+      const { userId } = ctx;
+
+      if (!userId || walletUserId !== userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const userWallet = await db.userWallet.findMany({
+        where: {
+          userId: walletUserId,
+        },
+      });
+
+      if (userWallet.length === 0) {
+        return { data: "You dont have any tokens in your wallet" };
+      }
+
+      if (!userWallet) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Wallet not found" });
+      }
+
+      return { data: userWallet };
     }),
 });
 
