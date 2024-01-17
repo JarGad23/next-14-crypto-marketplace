@@ -17,7 +17,7 @@ model Token {
   price         Float
   quantity      Int
   creatorUserId String
-  userTokens    UserToken[]
+  userWallets   UserWallet[]
   transactions  Transaction[]
   tokenForSales TokenForSale[]
 
@@ -25,7 +25,7 @@ model Token {
   updated_at DateTime @updatedAt
 }
 
-model UserToken {
+model UserWallet {
   id                  String @id @default(uuid())
   userId              String
   tokenId             String
