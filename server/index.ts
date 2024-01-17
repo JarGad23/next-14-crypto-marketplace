@@ -47,13 +47,13 @@ export const appRouter = router({
             price,
             quantity,
             imageUrl,
-            userId,
+            creatorUserId: userId,
           },
         });
 
-        const userToken = await db.userTokens.create({
+        const userToken = await db.userToken.create({
           data: {
-            userId: token.userId,
+            userId: token.creatorUserId,
             tokenId: token.id,
             userQuantityOfToken: token.quantity,
           },
