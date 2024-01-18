@@ -11,15 +11,15 @@ datasource db {
 }
 
 model Token {
-  id            String         @id @default(uuid())
-  name          String         @unique @db.Text
-  imageUrl      String?
-  price         Float
-  quantity      Int
-  creatorUserId String
-  userWallets   UserWallet[]
-  transactions  Transaction[]
-  tokenForSales TokenForSale[]
+  id              String         @id @default(uuid())
+  name            String         @unique @db.Text
+  imageUrl        String?
+  price           Float
+  quantity        Int
+  creatorUserName String?
+  userWallets     UserWallet[]
+  transactions    Transaction[]
+  tokenForSales   TokenForSale[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

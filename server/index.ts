@@ -3,6 +3,7 @@ import { privateProcedure, publicProcedure, router } from "./trpc";
 import { createTokenSchema } from "@/schemas";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/lib/db";
+import { getUserById } from "@/lib/get-user";
 
 export const appRouter = router({
   createToken: privateProcedure
@@ -11,6 +12,9 @@ export const appRouter = router({
       try {
         const { userId } = ctx;
         const { name, price, quantity, imageUrl } = input;
+        const user = await getUserById(userId);
+
+        const userFullName = `${user.firstName} ${user.lastName}` || "User";
 
         if (!userId) {
           throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -47,13 +51,13 @@ export const appRouter = router({
             price,
             quantity,
             imageUrl,
-            creatorUserId: userId,
+            creatorUserName: userFullName,
           },
         });
 
         const userToken = await db.userWallet.create({
           data: {
-            userId: token.creatorUserId,
+            userId,
             tokenId: token.id,
             userQuantityOfToken: token.quantity,
           },
@@ -66,6 +70,34 @@ export const appRouter = router({
           message: error.message,
         });
       }
+    }),
+  getToken: publicProcedure
+    .input(
+      z.object({
+        tokenId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const { tokenId } = input;
+
+      if (!tokenId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Missing token Id",
+        });
+      }
+
+      const token = await db.token.findFirst({
+        where: {
+          id: tokenId,
+        },
+      });
+
+      if (!token) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Token not found" });
+      }
+
+      return { token };
     }),
   getUserWallet: privateProcedure
     .input(
