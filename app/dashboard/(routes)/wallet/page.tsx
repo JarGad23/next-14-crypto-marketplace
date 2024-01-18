@@ -56,7 +56,7 @@ const WalletPage = () => {
             </Button>
           </div>
         ) : (
-          <div className="pt-20 flex flex-col md:flex-row md:flex-wrap justify-center items-center gap-8">
+          <div className="w-full pt-20 flex flex-col md:flex-row md:flex-wrap items-center gap-8">
             {tokens.length === 0 ? (
               <div className="pt-20 flex flex-col items-center justify-center gap-y-6">
                 <div className="flex items-center gap-x-2">
@@ -84,7 +84,13 @@ const WalletPage = () => {
                 </span>
               </div>
             ) : (
-              tokens.map((token) => <TokenCard />)
+              tokens.map((token) => (
+                <TokenCard
+                  key={token.id}
+                  tokenId={token.tokenId}
+                  userQuantityOfToken={token.userQuantityOfToken}
+                />
+              ))
             )}
           </div>
         )}
