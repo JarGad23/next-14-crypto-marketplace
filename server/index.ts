@@ -87,15 +87,11 @@ export const appRouter = router({
         },
       });
 
-      if (userWallet.length === 0) {
-        return { data: "You dont have any tokens in your wallet" };
-      }
-
       if (!userWallet) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Wallet not found" });
       }
 
-      return { data: userWallet };
+      return userWallet;
     }),
 });
 
