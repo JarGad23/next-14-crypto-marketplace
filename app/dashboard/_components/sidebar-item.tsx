@@ -1,9 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { type SidebarRoute } from "@/routes/sidebar-routes";
-import Link from "next/link";
 
 interface SidebarItems extends SidebarRoute {
   isActive: boolean;
@@ -19,7 +17,7 @@ export const SidebarItem = ({
   return (
     <li
       className={cn(
-        "w-full py-5 px-4 hover:bg-primary/60 transition",
+        "w-full h-20 px-4 hover:bg-primary/60 transition",
         isActive ? "bg-primary/60 border-r-4 border-primary" : ""
       )}
     >

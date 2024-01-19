@@ -3,7 +3,6 @@
 import { trpc } from "@/app/_trpc/client";
 import { TokenCard, TokenCardSkeleton } from "@/components/token-card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@clerk/nextjs";
 import { AlertCircle, Wallet } from "lucide-react";
 import Link from "next/link";
@@ -87,7 +86,7 @@ const WalletPage = () => {
               tokens.map((token) => (
                 <TokenCard
                   key={token.id}
-                  tokenId={token.tokenId}
+                  token={token.token}
                   userQuantityOfToken={token.userQuantityOfToken}
                 />
               ))
