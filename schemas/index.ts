@@ -12,3 +12,16 @@ export const createTokenSchema = z.object({
   }),
   imageUrl: z.string(),
 });
+
+export const sellTokenSchema = z
+  .object({
+    name: z.string().readonly(),
+    price: z.number().readonly(),
+    userQuantityOfToken: z.number().readonly(),
+    quantityForSale: z.coerce.number().min(1, {
+      message: "Minimum quantity is 1",
+    }),
+  })
+  .refine((data) => data.quantityForSale > data.userQuantityOfToken, {
+    message: "Can't set higher quantity than your current quantity",
+  });

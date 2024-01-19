@@ -117,6 +117,9 @@ export const appRouter = router({
         where: {
           userId: walletUserId,
         },
+        include: {
+          token: true,
+        },
       });
 
       if (!userWallet) {
