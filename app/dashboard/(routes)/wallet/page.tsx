@@ -3,6 +3,7 @@
 import { trpc } from "@/app/_trpc/client";
 import { TokenCard, TokenCardSkeleton } from "@/components/token-card";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
 import { AlertCircle, Wallet } from "lucide-react";
 import Link from "next/link";
@@ -37,8 +38,8 @@ const WalletPage = () => {
       <div>
         {isLoading ? (
           <div className="pt-20 flex flex-col md:flex-row md:flex-wrap items-center gap-8">
-            {[...Array(6)].map((_) => (
-              <TokenCardSkeleton />
+            {[...Array(6)].map((_, i) => (
+              <TokenCardSkeleton key={i} />
             ))}
           </div>
         ) : isError ? (
@@ -55,7 +56,12 @@ const WalletPage = () => {
             </Button>
           </div>
         ) : (
-          <div className="w-full pt-20 flex flex-col md:flex-row md:flex-wrap items-center gap-8">
+          <div
+            className={cn(
+              "w-full pt-20 flex flex-col md:flex-row md:flex-wrap items-center gap-8",
+              tokens.length === 0 && "justify-center"
+            )}
+          >
             {tokens.length === 0 ? (
               <div className="pt-20 flex flex-col items-center justify-center gap-y-6">
                 <div className="flex items-center gap-x-2">

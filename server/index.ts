@@ -99,6 +99,100 @@ export const appRouter = router({
 
       return { token };
     }),
+  sellToken: privateProcedure
+    .input(
+      z.object({
+        tokenId: z.string(),
+        quantityForSale: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { tokenId, quantityForSale } = input;
+
+      if (!userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      if (!tokenId || !quantityForSale) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Missing required tokenId or quantityForSale",
+        });
+      }
+
+      const existingToken = await db.token.findFirst({
+        where: {
+          id: tokenId,
+        },
+      });
+
+      if (!existingToken) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Token with provided Id not found",
+        });
+      }
+
+      if (existingToken.quantity < quantityForSale) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Quantity for sale cannot be higher than quantity of token",
+        });
+      }
+
+      await db.userWallet.update({
+        where: {
+          userId_tokenId: {
+            userId,
+            tokenId,
+          },
+        },
+        data: {
+          userQuantityOfToken: {
+            decrement: quantityForSale,
+          },
+        },
+      });
+
+      const existingTokenSale = await db.tokenForSale.findFirst({
+        where: {
+          sellerUserId: userId,
+          tokenId,
+        },
+      });
+
+      let tokenForSale;
+
+      if (existingTokenSale) {
+        tokenForSale = await db.tokenForSale.update({
+          where: {
+            tokenId_sellerUserId: {
+              tokenId: existingTokenSale.tokenId,
+              sellerUserId: existingTokenSale.sellerUserId,
+            },
+          },
+          data: {
+            quantityForSale: {
+              increment: quantityForSale,
+            },
+          },
+        });
+
+        return { tokenForSale };
+      }
+
+      tokenForSale = await db.tokenForSale.create({
+        data: {
+          tokenId,
+          sellerUserId: userId,
+          quantityForSale,
+          pricePerToken: existingToken.price,
+        },
+      });
+
+      return { tokenForSale };
+    }),
   getUserWallet: privateProcedure
     .input(
       z.object({
