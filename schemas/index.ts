@@ -22,6 +22,6 @@ export const sellTokenSchema = z
       message: "Minimum quantity is 1",
     }),
   })
-  .refine((data) => data.quantityForSale > data.userQuantityOfToken, {
+  .refine((data) => data.quantityForSale <= data.userQuantityOfToken, {
     message: "Can't set higher quantity than your current quantity",
   });
