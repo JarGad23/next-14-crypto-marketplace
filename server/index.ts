@@ -99,6 +99,20 @@ export const appRouter = router({
 
       return { token };
     }),
+  getSelledTokensForSeller: privateProcedure.query(async ({ ctx }) => {
+    const { userId } = ctx;
+
+    const selledTokens = await db.tokenForSale.findMany({
+      where: {
+        sellerUserId: userId,
+      },
+      include: {
+        token: true,
+      },
+    });
+
+    return selledTokens;
+  }),
   getTokensForSale: publicProcedure.query(async ({ ctx }) => {
     const { userId } = ctx;
 
