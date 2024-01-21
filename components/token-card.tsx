@@ -11,13 +11,21 @@ import { formatPrice } from "@/lib/format-price";
 import { Button } from "./ui/button";
 import { Token } from "@prisma/client";
 import { SellTokenForm } from "./sell-token-form";
+import { BuyTokenForm } from "./buy-token-form";
 
 interface TokenCardProps {
   token: Token;
-  userQuantityOfToken: number;
+  userQuantityOfToken?: number;
+  quantityForSale?: number;
+  view: "Wallet" | "Browse";
 }
 
-export const TokenCard = ({ token, userQuantityOfToken }: TokenCardProps) => {
+export const TokenCard = ({
+  token,
+  userQuantityOfToken,
+  view,
+  quantityForSale,
+}: TokenCardProps) => {
   return (
     <Card className="w-full lg:w-[45%] 2xl:w-[32%]">
       <CardHeader>
@@ -44,22 +52,45 @@ export const TokenCard = ({ token, userQuantityOfToken }: TokenCardProps) => {
             <span className="font-semibold">{formatPrice(token.price)}</span>
           </h3>
         </div>
-        <div className="flex items-center gap-x-2">
-          <h3>
-            Quantity of tokens:{" "}
-            <span className="font-semibold">
-              {`${userQuantityOfToken}/${token.quantity}`}
-            </span>
-          </h3>
-        </div>
-        <SellTokenForm
-          tokenId={token.id}
-          price={token.price}
-          userQuantityOfToken={userQuantityOfToken}
-          name={token.name}
-        >
-          <Button className="w-full">Sell</Button>
-        </SellTokenForm>
+        {view === "Wallet" && userQuantityOfToken ? (
+          <>
+            <div className="flex items-center gap-x-2">
+              <h3>
+                Quantity of tokens:{" "}
+                <span className="font-semibold">
+                  {`${userQuantityOfToken}/${token.quantity}`}
+                </span>
+              </h3>
+            </div>
+            <SellTokenForm
+              tokenId={token.id}
+              price={token.price}
+              userQuantityOfToken={userQuantityOfToken}
+              name={token.name}
+            >
+              <Button className="w-full">Sell</Button>
+            </SellTokenForm>
+          </>
+        ) : (
+          view === "Browse" &&
+          quantityForSale && (
+            <>
+              <div className="flex flex-col gap-y-2">
+                <h3>
+                  Avaliable amount of tokens{" "}
+                  <span className="font-semibold">{quantityForSale}</span>
+                </h3>
+                <h3>
+                  Maximum amount of that token is:{" "}
+                  <span className="font-semibold">{token.quantity}</span>
+                </h3>
+              </div>
+              <BuyTokenForm>
+                <Button className="w-full">Buy</Button>
+              </BuyTokenForm>
+            </>
+          )
+        )}
       </CardContent>
     </Card>
   );

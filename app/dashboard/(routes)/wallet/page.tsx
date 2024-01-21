@@ -94,6 +94,7 @@ const WalletPage = () => {
                   key={token.id}
                   token={token.token}
                   userQuantityOfToken={token.userQuantityOfToken}
+                  view="Wallet"
                 />
               ))
             )}
