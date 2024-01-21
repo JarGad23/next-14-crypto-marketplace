@@ -32,8 +32,8 @@ export const sidebarRoutes: SidebarRoute[] = [
   },
   {
     icon: CircleDollarSign,
-    label: "Sell",
-    href: "/dashboard/sell",
+    label: "Sales",
+    href: "/dashboard/sales",
   },
   {
     icon: ShoppingCart,
