@@ -17,15 +17,94 @@ interface TokenCardProps {
   token: Token;
   userQuantityOfToken?: number;
   quantityForSale?: number;
-  view: "Wallet" | "Browse";
+  soldQuantity?: number;
+  view: "Wallet" | "Browse" | "Sales";
 }
 
 export const TokenCard = ({
   token,
-  userQuantityOfToken,
   view,
+  userQuantityOfToken,
   quantityForSale,
+  soldQuantity,
 }: TokenCardProps) => {
+  let content;
+
+  switch (view) {
+    case "Wallet":
+      if (userQuantityOfToken) {
+        content = (
+          <>
+            <div className="flex items-center gap-x-2">
+              <h3>
+                Quantity of tokens:{" "}
+                <span className="font-semibold">
+                  {`${userQuantityOfToken}/${token.quantity}`}
+                </span>
+              </h3>
+            </div>
+            <SellTokenForm
+              tokenId={token.id}
+              price={token.price}
+              userQuantityOfToken={userQuantityOfToken}
+              name={token.name}
+            >
+              <Button className="w-full">Sell</Button>
+            </SellTokenForm>
+          </>
+        );
+      }
+      break;
+
+    case "Browse":
+      if (quantityForSale) {
+        content = (
+          <>
+            <div className="flex flex-col gap-y-2">
+              <h3>
+                Available amount of tokens{" "}
+                <span className="font-semibold">{quantityForSale}</span>
+              </h3>
+              <h3>
+                Maximum amount of that token is:{" "}
+                <span className="font-semibold">{token.quantity}</span>
+              </h3>
+            </div>
+            <BuyTokenForm>
+              <Button className="w-full">Buy</Button>
+            </BuyTokenForm>
+          </>
+        );
+      }
+      break;
+
+    case "Sales":
+      if (quantityForSale && soldQuantity !== null) {
+        content = (
+          <>
+            <div className="flex flex-col gap-y-2">
+              <h3>
+                Selling amount of tokens:{" "}
+                <span className="font-semibold">{quantityForSale}</span>
+              </h3>
+              <h3>
+                Tokens that you have already sold:{" "}
+                <span className="font-semibold">{soldQuantity}</span>
+              </h3>
+            </div>
+            {/* Delete sales modal or update*/}
+            <BuyTokenForm>
+              <Button className="w-full">Update Sale</Button>
+            </BuyTokenForm>
+          </>
+        );
+      }
+      break;
+
+    default:
+      content = null;
+  }
+
   return (
     <Card className="w-full lg:w-[45%] 2xl:w-[32%]">
       <CardHeader>
@@ -52,45 +131,7 @@ export const TokenCard = ({
             <span className="font-semibold">{formatPrice(token.price)}</span>
           </h3>
         </div>
-        {view === "Wallet" && userQuantityOfToken ? (
-          <>
-            <div className="flex items-center gap-x-2">
-              <h3>
-                Quantity of tokens:{" "}
-                <span className="font-semibold">
-                  {`${userQuantityOfToken}/${token.quantity}`}
-                </span>
-              </h3>
-            </div>
-            <SellTokenForm
-              tokenId={token.id}
-              price={token.price}
-              userQuantityOfToken={userQuantityOfToken}
-              name={token.name}
-            >
-              <Button className="w-full">Sell</Button>
-            </SellTokenForm>
-          </>
-        ) : (
-          view === "Browse" &&
-          quantityForSale && (
-            <>
-              <div className="flex flex-col gap-y-2">
-                <h3>
-                  Avaliable amount of tokens{" "}
-                  <span className="font-semibold">{quantityForSale}</span>
-                </h3>
-                <h3>
-                  Maximum amount of that token is:{" "}
-                  <span className="font-semibold">{token.quantity}</span>
-                </h3>
-              </div>
-              <BuyTokenForm>
-                <Button className="w-full">Buy</Button>
-              </BuyTokenForm>
-            </>
-          )
-        )}
+        {content}
       </CardContent>
     </Card>
   );
