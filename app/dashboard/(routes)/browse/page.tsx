@@ -4,7 +4,7 @@ import { trpc } from "@/app/_trpc/client";
 import { TokenCard, TokenCardSkeleton } from "@/components/token-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { AlertCircle, Wallet } from "lucide-react";
+import { AlertCircle, Ghost } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -19,8 +19,10 @@ const BrowsePage = () => {
   return (
     <div className="p-6 flex flex-col">
       <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold">Your wallet 💸</h2>
-        <p className="text-muted-foreground">Here you can manage your tokens</p>
+        <h2 className="text-4xl font-bold">Browse page 💰</h2>
+        <p className="text-muted-foreground">
+          Here you can buy tokens created by other users
+        </p>
       </div>
       <div>
         {isLoading ? (
@@ -53,26 +55,19 @@ const BrowsePage = () => {
               <div className="pt-20 flex flex-col items-center justify-center gap-y-6">
                 <div className="flex items-center gap-x-2">
                   <h3 className="font-semibold text-3xl">
-                    Your wallet is empty
+                    A little bit empty here
                   </h3>
-                  <Wallet className="h-10 w-10 ml-2" />
+                  <Ghost className="h-10 w-10 ml-2" />
                 </div>
                 <span className="text-xl text-muted-foreground">
-                  You can get some tokens{" "}
-                  <Link
-                    href="/dashboard/browse"
-                    className="text-primary font-semibold text"
-                  >
-                    here
-                  </Link>{" "}
-                  or you can go and{" "}
+                  Try to{" "}
                   <Link
                     href="/dashboard/create"
-                    className="text-primary font-semibold text"
+                    className="text-primary font-semibold"
                   >
                     create
                   </Link>{" "}
-                  your own.
+                  your own token
                 </span>
               </div>
             ) : (
