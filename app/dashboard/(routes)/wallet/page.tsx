@@ -74,14 +74,14 @@ const WalletPage = () => {
                   You can get some tokens{" "}
                   <Link
                     href="/dashboard/browse"
-                    className="text-primary font-semibold text"
+                    className="text-primary font-semibold"
                   >
                     here
                   </Link>{" "}
                   or you can go and{" "}
                   <Link
                     href="/dashboard/create"
-                    className="text-primary font-semibold text"
+                    className="text-primary font-semibold"
                   >
                     create
                   </Link>{" "}
@@ -94,6 +94,7 @@ const WalletPage = () => {
                   key={token.id}
                   token={token.token}
                   userQuantityOfToken={token.userQuantityOfToken}
+                  view="Wallet"
                 />
               ))
             )}

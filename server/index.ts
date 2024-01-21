@@ -99,6 +99,34 @@ export const appRouter = router({
 
       return { token };
     }),
+  getTokensForSale: publicProcedure.query(async ({ ctx }) => {
+    const { userId } = ctx;
+
+    let tokensForSale;
+
+    if (!userId) {
+      tokensForSale = await db.tokenForSale.findMany({
+        include: {
+          token: true,
+        },
+      });
+
+      return { tokensForSale };
+    }
+
+    tokensForSale = await db.tokenForSale.findMany({
+      where: {
+        NOT: {
+          sellerUserId: userId,
+        },
+      },
+      include: {
+        token: true,
+      },
+    });
+
+    return { tokensForSale };
+  }),
   sellToken: privateProcedure
     .input(
       z.object({
@@ -179,7 +207,7 @@ export const appRouter = router({
           },
         });
 
-        return { tokenForSale };
+        return tokenForSale;
       }
 
       tokenForSale = await db.tokenForSale.create({
@@ -191,7 +219,7 @@ export const appRouter = router({
         },
       });
 
-      return { tokenForSale };
+      return tokenForSale;
     }),
   getUserWallet: privateProcedure
     .input(
