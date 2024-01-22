@@ -12,7 +12,6 @@ import {
   AlertDialogCancel,
 } from "./ui/alert-dialog";
 import { toast } from "sonner";
-import { DialogContent } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 
 interface DeleteTokenSaleModalProps {
