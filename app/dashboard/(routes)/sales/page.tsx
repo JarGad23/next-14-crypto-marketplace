@@ -81,6 +81,7 @@ const SalesPage = () => {
                   token={token.token}
                   quantityForSale={token.quantityForSale}
                   soldQuantity={token.soldQuantity}
+                  saleId={token.id}
                   view="Sales"
                 />
               ))
