@@ -43,16 +43,23 @@ enum TransactionType {
   Sell
 }
 
+enum TransactionState {
+  PENDING
+  PAID
+  DENIED
+}
+
 model Transaction {
-  id              String          @id @default(uuid())
-  userId          String
-  tokenId         String
-  token           Token           @relation(fields: [tokenId], references: [id])
-  quantity        Int
-  pricePerToken   Float
-  sellerUserId    String
-  buyerUserId     String
-  transactionType TransactionType
+  id               String           @id @default(uuid())
+  userId           String
+  tokenId          String
+  token            Token            @relation(fields: [tokenId], references: [id])
+  quantity         Int
+  pricePerToken    Float
+  sellerUserId     String
+  buyerUserId      String
+  transactionType  TransactionType
+  transactionState TransactionState
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

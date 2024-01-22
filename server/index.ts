@@ -235,6 +235,157 @@ export const appRouter = router({
 
       return tokenForSale;
     }),
+  deleteSellToken: privateProcedure
+    .input(
+      z.object({
+        saleId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { saleId } = input;
+
+      if (!userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      if (!saleId) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Missing saleId" });
+      }
+
+      const existingSale = await db.tokenForSale.findFirst({
+        where: {
+          id: saleId,
+        },
+      });
+
+      if (!existingSale) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Not found sale with provided Id",
+        });
+      }
+
+      const deleteSale = await db.tokenForSale.delete({
+        where: {
+          id: existingSale.id,
+        },
+      });
+
+      await db.userWallet.update({
+        where: {
+          userId_tokenId: {
+            userId,
+            tokenId: deleteSale.tokenId,
+          },
+        },
+        data: {
+          userQuantityOfToken: {
+            increment: deleteSale.quantityForSale,
+          },
+        },
+      });
+
+      return deleteSale;
+    }),
+  updateSellToken: privateProcedure
+    .input(
+      z.object({
+        saleId: z.string(),
+        newQuantityForSale: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { saleId, newQuantityForSale } = input;
+
+      if (!userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      if (!saleId || !newQuantityForSale) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Missing saleId",
+        });
+      }
+
+      const existingSale = await db.tokenForSale.findFirst({
+        where: {
+          id: saleId,
+        },
+      });
+
+      if (!existingSale) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Not found sale with provided Id",
+        });
+      }
+
+      const oldQuantityForSale = existingSale.quantityForSale;
+      const quantityDifference = newQuantityForSale - oldQuantityForSale;
+
+      if (quantityDifference > 0) {
+        const userWallet = await db.userWallet.findUnique({
+          where: {
+            userId_tokenId: {
+              userId,
+              tokenId: existingSale.tokenId,
+            },
+          },
+        });
+
+        if (
+          !userWallet ||
+          userWallet.userQuantityOfToken < quantityDifference
+        ) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Not enough tokens in the wallet for the update",
+          });
+        }
+
+        await db.userWallet.update({
+          where: {
+            userId_tokenId: {
+              userId,
+              tokenId: existingSale.tokenId,
+            },
+          },
+          data: {
+            userQuantityOfToken: {
+              decrement: quantityDifference,
+            },
+          },
+        });
+      } else if (quantityDifference < 0) {
+        await db.userWallet.update({
+          where: {
+            userId_tokenId: {
+              userId,
+              tokenId: existingSale.tokenId,
+            },
+          },
+          data: {
+            userQuantityOfToken: {
+              increment: -quantityDifference,
+            },
+          },
+        });
+      }
+
+      const updatedSale = await db.tokenForSale.update({
+        where: {
+          id: existingSale.id,
+        },
+        data: {
+          quantityForSale: newQuantityForSale,
+        },
+      });
+
+      return updatedSale;
+    }),
   getUserWallet: privateProcedure
     .input(
       z.object({

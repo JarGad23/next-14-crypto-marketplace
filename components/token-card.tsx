@@ -12,12 +12,15 @@ import { Button } from "./ui/button";
 import { Token } from "@prisma/client";
 import { SellTokenForm } from "./sell-token-form";
 import { BuyTokenForm } from "./buy-token-form";
+import { DeleteTokenSaleModal } from "./delete-token-sale-modal";
+import { UpdateTokenSaleForm } from "./update-token-sale-form";
 
 interface TokenCardProps {
   token: Token;
   userQuantityOfToken?: number;
   quantityForSale?: number;
   soldQuantity?: number;
+  saleId?: string;
   view: "Wallet" | "Browse" | "Sales";
 }
 
@@ -27,6 +30,7 @@ export const TokenCard = ({
   userQuantityOfToken,
   quantityForSale,
   soldQuantity,
+  saleId,
 }: TokenCardProps) => {
   let content;
 
@@ -79,7 +83,7 @@ export const TokenCard = ({
       break;
 
     case "Sales":
-      if (quantityForSale && soldQuantity !== null) {
+      if (quantityForSale && soldQuantity !== null && saleId !== undefined) {
         content = (
           <>
             <div className="flex flex-col gap-y-2">
@@ -92,10 +96,16 @@ export const TokenCard = ({
                 <span className="font-semibold">{soldQuantity}</span>
               </h3>
             </div>
-            {/* Delete sales modal or update*/}
-            <BuyTokenForm>
-              <Button className="w-full">Update Sale</Button>
-            </BuyTokenForm>
+            <div className="flex w-full items-center justify-center gap-x-4">
+              <UpdateTokenSaleForm>
+                <Button className="w-full">Update Sale</Button>
+              </UpdateTokenSaleForm>
+              <DeleteTokenSaleModal saleId={saleId}>
+                <Button variant="destructive" className="w-full">
+                  Delete Sale
+                </Button>
+              </DeleteTokenSaleModal>
+            </div>
           </>
         );
       }
