@@ -415,6 +415,41 @@ export const appRouter = router({
 
       return userWallet;
     }),
+  getTokenFromUserWallet: privateProcedure
+    .input(
+      z.object({
+        walletUserId: z.string(),
+        tokenId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { walletUserId, tokenId } = input;
+
+      if (!userId || walletUserId !== userId) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      if (!tokenId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Miisting token ID",
+        });
+      }
+
+      const tokenFromUserWallet = await db.userWallet.findFirst({
+        where: {
+          userId: walletUserId,
+          tokenId,
+        },
+      });
+
+      if (!tokenFromUserWallet) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return tokenFromUserWallet;
+    }),
 });
 
 export type AppRouter = typeof appRouter;
