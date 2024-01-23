@@ -25,3 +25,19 @@ export const sellTokenSchema = z
   .refine((data) => data.quantityForSale <= data.userQuantityOfToken, {
     message: "Can't set higher quantity than your current quantity",
   });
+
+export const updateTokenSaleSchema = z
+  .object({
+    name: z.string().readonly(),
+    price: z.number().readonly(),
+    userQuantityOfToken: z.number().readonly(),
+    newQuantityOfTokensForSale: z.coerce.number().min(1, {
+      message: "Minimum quantity is 1",
+    }),
+  })
+  .refine(
+    (data) => data.newQuantityOfTokensForSale <= data.userQuantityOfToken,
+    {
+      message: "Can't set higher quantity than your current quantity",
+    }
+  );
