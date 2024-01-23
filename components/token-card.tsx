@@ -97,7 +97,11 @@ export const TokenCard = ({
               </h3>
             </div>
             <div className="flex w-full items-center justify-center gap-x-4">
-              <UpdateTokenSaleForm>
+              <UpdateTokenSaleForm
+                saleId={saleId}
+                quantityForSale={quantityForSale}
+                sellingTokenId={token.id}
+              >
                 <Button className="w-full">Update Sale</Button>
               </UpdateTokenSaleForm>
               <DeleteTokenSaleModal saleId={saleId}>
