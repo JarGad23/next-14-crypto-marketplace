@@ -114,7 +114,7 @@ export const UpdateTokenSaleForm = ({
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Price</FormLabel>
+                      <FormLabel>Price per token</FormLabel>
                       <FormControl>
                         <Input {...field} disabled readOnly />
                       </FormControl>

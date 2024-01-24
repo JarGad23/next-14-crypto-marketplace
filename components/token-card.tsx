@@ -61,7 +61,7 @@ export const TokenCard = ({
       break;
 
     case "Browse":
-      if (quantityForSale) {
+      if (quantityForSale && saleId) {
         content = (
           <>
             <div className="flex flex-col gap-y-2">
@@ -74,7 +74,12 @@ export const TokenCard = ({
                 <span className="font-semibold">{token.quantity}</span>
               </h3>
             </div>
-            <BuyTokenForm>
+            <BuyTokenForm
+              name={token.name}
+              price={token.price}
+              quantityForSale={quantityForSale}
+              saleId={saleId}
+            >
               <Button className="w-full">Buy</Button>
             </BuyTokenForm>
           </>

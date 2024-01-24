@@ -80,6 +80,7 @@ const BrowsePage = () => {
                   key={token.id}
                   token={token.token}
                   quantityForSale={token.quantityForSale}
+                  saleId={token.id}
                   view="Browse"
                 />
               ))
