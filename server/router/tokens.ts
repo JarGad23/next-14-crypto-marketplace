@@ -99,4 +99,15 @@ export const tokensRouter = router({
 
       return { token };
     }),
+  buyToken: privateProcedure
+    .input(
+      z.object({
+        saleId: z.string(),
+        quantityForBuy: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      let url = "";
+      return url;
+    }),
 });

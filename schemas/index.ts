@@ -41,3 +41,29 @@ export const updateTokenSaleSchema = z
       message: "Can't set higher quantity than your current quantity",
     }
   );
+
+export const buyTokenSchema = z
+  .object({
+    name: z.string().readonly(),
+    price: z.number().readonly(),
+    quantityForSale: z.number().readonly(),
+    quantityForBuy: z.coerce.number(),
+  })
+  .refine(
+    (data) => {
+      return data.quantityForBuy >= 1;
+    },
+    {
+      message: "Minimum quantity is 1",
+      path: ["quantityForBuy"],
+    }
+  )
+  .refine(
+    (data) => {
+      return data.quantityForBuy <= data.quantityForSale;
+    },
+    {
+      message: "Can't set more quantity than is for sale",
+      path: ["quantityForBuy"],
+    }
+  );
