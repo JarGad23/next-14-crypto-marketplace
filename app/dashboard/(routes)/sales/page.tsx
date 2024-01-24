@@ -14,7 +14,7 @@ const SalesPage = () => {
     data: tokens,
     isError,
     isLoading,
-  } = trpc.getSelledTokensForSeller.useQuery();
+  } = trpc.sales.getSelledTokensForSeller.useQuery();
 
   const onClick = () => {
     router.refresh();

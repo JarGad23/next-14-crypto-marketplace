@@ -21,7 +21,7 @@ const WalletPage = () => {
     data: tokens,
     isError,
     isLoading,
-  } = trpc.getUserWallet.useQuery({
+  } = trpc.wallet.getUserWallet.useQuery({
     walletUserId: userId,
   });
 

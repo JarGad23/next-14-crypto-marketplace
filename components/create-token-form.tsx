@@ -26,16 +26,17 @@ export const CreateTokenForm = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [isEditingImage, setIsEditingImage] = useState(false);
 
-  const { mutate: createToken, isLoading } = trpc.createToken.useMutation({
-    onSuccess: () => {
-      form.reset();
-      setImageUrl("");
-      toast.success("Token created successfully");
-    },
-    onError: ({ message }) => {
-      toast.error(message);
-    },
-  });
+  const { mutate: createToken, isLoading } =
+    trpc.tokens.createToken.useMutation({
+      onSuccess: () => {
+        form.reset();
+        setImageUrl("");
+        toast.success("Token created successfully");
+      },
+      onError: ({ message }) => {
+        toast.error(message);
+      },
+    });
 
   const form = useForm<z.infer<typeof createTokenSchema>>({
     resolver: zodResolver(createTokenSchema),

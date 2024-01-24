@@ -36,7 +36,7 @@ export const SellTokenForm = ({
   tokenId,
 }: SellTokenFormProps) => {
   const formCloseRef = useRef<ElementRef<"button">>(null);
-  const { mutate: sellToken, isLoading } = trpc.sellToken.useMutation({
+  const { mutate: sellToken, isLoading } = trpc.sales.createSale.useMutation({
     onSuccess: () => {
       form.reset();
       toast.success("Token set for sale successfully");
