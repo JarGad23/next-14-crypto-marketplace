@@ -11,7 +11,11 @@ import { useRouter } from "next/navigation";
 const BrowsePage = () => {
   const router = useRouter();
 
-  const { data: tokens, isError, isLoading } = trpc.getTokensForSale.useQuery();
+  const {
+    data: tokens,
+    isError,
+    isLoading,
+  } = trpc.sales.getTokensForSale.useQuery();
 
   const onClick = () => {
     router.refresh();

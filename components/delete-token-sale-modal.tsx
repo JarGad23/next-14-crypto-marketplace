@@ -27,8 +27,8 @@ export const DeleteTokenSaleModal = ({
     mutate: deleteSale,
     isError,
     isLoading,
-  } = trpc.deleteSellToken.useMutation({
-    onSuccess: (data) => {
+  } = trpc.sales.deleteSale.useMutation({
+    onSuccess: () => {
       toast.success("Token deleted successfully");
       window.location.reload();
     },

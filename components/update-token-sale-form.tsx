@@ -43,12 +43,12 @@ export const UpdateTokenSaleForm = ({
   }
 
   const { data: userTokenInWallet, isError } =
-    trpc.getTokenFromUserWallet.useQuery({
+    trpc.wallet.getTokenFromUserWallet.useQuery({
       walletUserId: userId,
       tokenId: sellingTokenId,
     });
 
-  const { mutate: updateSale, isLoading } = trpc.updateSellToken.useMutation({
+  const { mutate: updateSale, isLoading } = trpc.sales.updateSale.useMutation({
     onSuccess: () => {
       form.reset();
       toast.success("Sale updated successfully");
