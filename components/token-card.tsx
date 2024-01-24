@@ -153,19 +153,19 @@ export const TokenCard = ({
 
 export function TokenCardSkeleton() {
   return (
-    <div className="w-full lg:w-[45%] 2xl:w-[32%] h-60 rounded-md flex flex-col bg-gray-900 p-6">
+    <div className="w-full lg:w-[45%] 2xl:w-[32%] h-60 rounded-md flex flex-col bg-gray-300 dark:bg-gray-900 p-6">
       <div className="w-full flex flex-col">
         <div className="flex justify-between items-center gap-x-2">
           <div className="flex flex-col gap-y-2">
-            <Skeleton className="w-28 h-8" />
-            <Skeleton className="w-36 h-3" />
+            <Skeleton className="w-36 h-8" />
+            <Skeleton className="w-44 h-3" />
           </div>
           <Skeleton className="w-20 h-20 rounded-full" />
         </div>
       </div>
       <div className="w-full flex flex-col gap-y-4 mt-4">
-        <Skeleton className="w-32 h-4" />
-        <Skeleton className="w-32 h-4" />
+        <Skeleton className="w-52 h-4" />
+        <Skeleton className="w-52 h-4" />
         <Skeleton className="w-full h-8 rounded-md" />
       </div>
     </div>
