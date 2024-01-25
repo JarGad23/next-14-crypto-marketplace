@@ -14,6 +14,8 @@ import { SellTokenForm } from "./sell-token-form";
 import { BuyTokenForm } from "./buy-token-form";
 import { DeleteTokenSaleModal } from "./delete-token-sale-modal";
 import { UpdateTokenSaleForm } from "./update-token-sale-form";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 interface TokenCardProps {
   token: Token;
@@ -38,8 +40,8 @@ export const TokenCard = ({
     case "Wallet":
       if (userQuantityOfToken) {
         content = (
-          <>
-            <div className="flex items-center gap-x-2">
+          <div className="h-full flex flex-col justify-between gap-y-4">
+            <div className="flex items-center gap-x-2 mt-4">
               <h3>
                 Quantity of tokens:{" "}
                 <span className="font-semibold">
@@ -47,15 +49,39 @@ export const TokenCard = ({
                 </span>
               </h3>
             </div>
-            <SellTokenForm
-              tokenId={token.id}
-              price={token.price}
-              userQuantityOfToken={userQuantityOfToken}
-              name={token.name}
-            >
-              <Button className="w-full">Sell</Button>
-            </SellTokenForm>
-          </>
+            <div className="h-fill">
+              <SellTokenForm
+                tokenId={token.id}
+                price={token.price}
+                userQuantityOfToken={userQuantityOfToken}
+                name={token.name}
+              >
+                <Button className="w-full">Sell</Button>
+              </SellTokenForm>
+            </div>
+          </div>
+        );
+      } else {
+        content = (
+          <div className="h-full flex flex-col justify-between gap-y-4">
+            <div className="flex flex-col items-center mt-2 md:mt-0 xl:mt-4">
+              <h3 className="text-lg font-semibold">
+                You currently selling all your tokens.
+              </h3>
+              <p className="text-muted-foreground text-xs lg:text-sm text-center">
+                To get back tokens reduce your selling amount or delte a sale.
+              </p>
+            </div>
+            <Button className="w-full">
+              <Link
+                href="/dashboard/sales"
+                className="w-full flex items-center justify-center"
+              >
+                Go to sales
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </div>
         );
       }
       break;
@@ -125,8 +151,8 @@ export const TokenCard = ({
   }
 
   return (
-    <Card className="w-full lg:w-[45%] 2xl:w-[32%]">
-      <CardHeader>
+    <Card className="w-full h-[320px] lg:w-[45%] 2xl:w-[32%] flex flex-col justify-between">
+      <CardHeader className="h-1/3">
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-3xl">{token.name}</CardTitle>
@@ -143,7 +169,7 @@ export const TokenCard = ({
           />
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="h-2/3 space-y-4 flex flex-col justify-between">
         <div className="flex items-center gap-x-2">
           <h3>
             Price per one token:{" "}
