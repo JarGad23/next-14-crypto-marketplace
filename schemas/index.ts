@@ -4,12 +4,22 @@ export const createTokenSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
   }),
-  price: z.coerce.number().min(0.0001, {
-    message: "Price is required",
-  }),
-  quantity: z.coerce.number().min(1, {
-    message: "Minimum quantity is 1",
-  }),
+  price: z.coerce
+    .number()
+    .min(0.0001, {
+      message: "Price is required",
+    })
+    .max(1000000, {
+      message: "Maximum price per token is 1 000 000",
+    }),
+  quantity: z.coerce
+    .number()
+    .min(1, {
+      message: "Minimum quantity is 1",
+    })
+    .max(1000000, {
+      message: "Maximum quantity is 1 000 000",
+    }),
   imageUrl: z.string(),
 });
 
@@ -18,12 +28,18 @@ export const sellTokenSchema = z
     name: z.string().readonly(),
     price: z.number().readonly(),
     userQuantityOfToken: z.number().readonly(),
-    quantityForSale: z.coerce.number().min(1, {
-      message: "Minimum quantity is 1",
-    }),
+    quantityForSale: z.coerce
+      .number()
+      .min(1, {
+        message: "Minimum quantity is 1",
+      })
+      .max(1000000, {
+        message: "Maximum quantity is 1 000 000",
+      }),
   })
   .refine((data) => data.quantityForSale <= data.userQuantityOfToken, {
     message: "Can't set higher quantity than your current quantity",
+    path: ["quantityForSale"],
   });
 
 export const updateTokenSaleSchema = z
@@ -39,6 +55,7 @@ export const updateTokenSaleSchema = z
     (data) => data.newQuantityOfTokensForSale <= data.userQuantityOfToken,
     {
       message: "Can't set higher quantity than your current quantity",
+      path: ["newQuantityOfTokensForSale"],
     }
   );
 
