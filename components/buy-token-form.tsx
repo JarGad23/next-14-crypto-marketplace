@@ -57,6 +57,7 @@ export const BuyTokenForm = ({
   });
 
   const form = useForm<z.infer<typeof buyTokenSchema>>({
+    mode: "all",
     resolver: zodResolver(buyTokenSchema),
     defaultValues: {
       name,
