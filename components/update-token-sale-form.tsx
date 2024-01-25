@@ -60,6 +60,7 @@ export const UpdateTokenSaleForm = ({
   });
 
   const form = useForm<z.infer<typeof updateTokenSaleSchema>>({
+    mode: "all",
     resolver: zodResolver(updateTokenSaleSchema),
     defaultValues: {
       name: "",
@@ -99,46 +100,46 @@ export const UpdateTokenSaleForm = ({
                 <FormField
                   control={form.control}
                   name="name"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input {...field} type="text" disabled readOnly />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="price"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Price per token</FormLabel>
                       <FormControl>
                         <Input {...field} disabled readOnly />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="userQuantityOfToken"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Your amount of tokens</FormLabel>
                       <FormControl>
                         <Input {...field} disabled readOnly />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="newQuantityOfTokensForSale"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Tokens you want to sale</FormLabel>
                       <FormControl>
@@ -149,12 +150,16 @@ export const UpdateTokenSaleForm = ({
                           type="number"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || !form.formState.isValid}
+              >
                 Update
               </Button>
             </form>
