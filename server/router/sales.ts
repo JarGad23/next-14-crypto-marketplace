@@ -88,6 +88,22 @@ export const salesRouter = router({
         });
       }
 
+      const tokenInUserWallet = await db.userWallet.findUnique({
+        where: {
+          userId_tokenId: {
+            userId,
+            tokenId,
+          },
+        },
+      });
+
+      if (!tokenInUserWallet) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Token with provided Id not found in user wallet",
+        });
+      }
+
       await db.userWallet.update({
         where: {
           userId_tokenId: {
