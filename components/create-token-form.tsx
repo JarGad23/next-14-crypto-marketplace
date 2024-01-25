@@ -18,13 +18,17 @@ import { CardWrapper } from "./card-wrapper";
 import { trpc } from "@/app/_trpc/client";
 import { toast } from "sonner";
 import { FileUpload } from "./file-upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const CreateTokenForm = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [isEditingImage, setIsEditingImage] = useState(false);
+  const [validForm, setValidForm] = useState(false);
+
+  const router = useRouter();
 
   const { mutate: createToken, isLoading } =
     trpc.tokens.createToken.useMutation({
@@ -32,6 +36,7 @@ export const CreateTokenForm = () => {
         form.reset();
         setImageUrl("");
         toast.success("Token created successfully");
+        router.push("/dashboard/wallet");
       },
       onError: ({ message }) => {
         toast.error(message);
@@ -39,14 +44,21 @@ export const CreateTokenForm = () => {
     });
 
   const form = useForm<z.infer<typeof createTokenSchema>>({
+    mode: "all",
     resolver: zodResolver(createTokenSchema),
     defaultValues: {
       name: "",
       imageUrl: "",
-      price: NaN,
-      quantity: NaN,
     },
   });
+
+  useEffect(() => {
+    if (imageUrl) {
+      if (form.formState.isValid) {
+        setValidForm(true);
+      }
+    }
+  }, [imageUrl, form.formState, validForm]);
 
   const onSubmit = (values: z.infer<typeof createTokenSchema>) => {
     createToken({ ...values, imageUrl });
@@ -60,7 +72,7 @@ export const CreateTokenForm = () => {
             <FormField
               control={form.control}
               name="name"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
@@ -71,14 +83,14 @@ export const CreateTokenForm = () => {
                       disabled={isLoading}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{fieldState.error?.message}</FormMessage>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name="price"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Price</FormLabel>
                   <FormControl>
@@ -89,14 +101,14 @@ export const CreateTokenForm = () => {
                       disabled={isLoading}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{fieldState.error?.message}</FormMessage>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
               name="quantity"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormLabel>Quantity</FormLabel>
                   <FormControl>
@@ -107,7 +119,7 @@ export const CreateTokenForm = () => {
                       disabled={isLoading}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage>{fieldState.error?.message}</FormMessage>
                 </FormItem>
               )}
             />
@@ -134,7 +146,7 @@ export const CreateTokenForm = () => {
               <FormField
                 control={form.control}
                 name="imageUrl"
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Image</FormLabel>
                     <FormControl>
@@ -150,13 +162,17 @@ export const CreateTokenForm = () => {
                         />
                       </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage>{fieldState.error?.message}</FormMessage>
                   </FormItem>
                 )}
               />
             )}
           </div>
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isLoading || !validForm}
+          >
             Create
           </Button>
         </form>

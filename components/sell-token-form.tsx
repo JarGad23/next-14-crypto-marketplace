@@ -48,6 +48,7 @@ export const SellTokenForm = ({
   });
 
   const form = useForm<z.infer<typeof sellTokenSchema>>({
+    mode: "all",
     resolver: zodResolver(sellTokenSchema),
     defaultValues: {
       name,
@@ -73,13 +74,13 @@ export const SellTokenForm = ({
                 <FormField
                   control={form.control}
                   name="name"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input {...field} type="text" disabled readOnly />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
@@ -99,20 +100,20 @@ export const SellTokenForm = ({
                 <FormField
                   control={form.control}
                   name="userQuantityOfToken"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Your amount of tokens</FormLabel>
                       <FormControl>
                         <Input {...field} disabled readOnly />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
                   name="quantityForSale"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel>Tokens you want to sale</FormLabel>
                       <FormControl>
@@ -123,12 +124,16 @@ export const SellTokenForm = ({
                           type="number"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
                     </FormItem>
                   )}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || !form.formState.isValid}
+              >
                 Sale
               </Button>
             </form>
