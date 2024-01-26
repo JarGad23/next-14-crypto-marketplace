@@ -46,7 +46,9 @@ export const BuyTokenForm = ({
 
   const { mutate: buyToken, isLoading } = trpc.tokens.buyToken.useMutation({
     onSuccess: (data) => {
-      // window.location.assign(data);
+      if (data) {
+        window.location.assign(data);
+      }
       console.log(data);
       form.reset();
       toast.success("Sale updated successfully");
