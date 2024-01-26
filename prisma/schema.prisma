@@ -38,11 +38,6 @@ model UserWallet {
   @@unique([userId, tokenId])
 }
 
-enum TransactionType {
-  Buy
-  Sell
-}
-
 enum TransactionState {
   PENDING
   PAID
@@ -51,14 +46,12 @@ enum TransactionState {
 
 model Transaction {
   id               String           @id @default(uuid())
-  userId           String
   tokenId          String
   token            Token            @relation(fields: [tokenId], references: [id])
   quantity         Int
   pricePerToken    Float
   sellerUserId     String
   buyerUserId      String
-  transactionType  TransactionType
   transactionState TransactionState
 
   created_at DateTime @default(now())
@@ -78,4 +71,13 @@ model TokenForSale {
   updated_at DateTime @updatedAt
 
   @@unique([tokenId, sellerUserId])
+}
+
+model StripeCustomer {
+  id               String @id @default(uuid())
+  userId           String @unique
+  stripeCustomerId String @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
