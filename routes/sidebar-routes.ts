@@ -42,7 +42,7 @@ export const sidebarRoutes: SidebarRoute[] = [
   },
   {
     icon: TrendingUp,
-    label: "Analytics",
-    href: "/dashboard/analytics",
+    label: "Transactions",
+    href: "/dashboard/transactions",
   },
 ];
