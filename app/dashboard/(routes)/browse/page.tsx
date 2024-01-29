@@ -23,7 +23,7 @@ const BrowsePage = () => {
   return (
     <div className="p-6 flex flex-col">
       <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold">Browse page 💰</h2>
+        <h2 className="text-4xl font-bold">Browse 💰</h2>
         <p className="text-muted-foreground">
           Here you can buy tokens created by other users
         </p>

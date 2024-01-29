@@ -23,7 +23,7 @@ const SalesPage = () => {
   return (
     <div className="p-6 flex flex-col">
       <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold">Sales page 🤑</h2>
+        <h2 className="text-4xl font-bold">Sales 🤑</h2>
         <p className="text-muted-foreground">
           Here you can manage your current selling tokens
         </p>
