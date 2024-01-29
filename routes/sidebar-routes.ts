@@ -1,11 +1,11 @@
 import {
   CircleDollarSign,
   Coins,
-  Gem,
   LayoutDashboard,
   LucideIcon,
   ShoppingCart,
   TrendingUp,
+  Wallet,
 } from "lucide-react";
 
 export type SidebarRoute = {
@@ -21,7 +21,7 @@ export const sidebarRoutes: SidebarRoute[] = [
     href: "/dashboard",
   },
   {
-    icon: Gem,
+    icon: Wallet,
     label: "Wallet",
     href: "/dashboard/wallet",
   },
