@@ -32,7 +32,7 @@ const WalletPage = () => {
   return (
     <div className="p-6 flex flex-col">
       <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold">Your wallet 💸</h2>
+        <h2 className="text-4xl font-bold">Wallet 💸</h2>
         <p className="text-muted-foreground">Here you can manage your tokens</p>
       </div>
       <div>
