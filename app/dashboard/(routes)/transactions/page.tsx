@@ -1,10 +1,13 @@
 "use client";
 
 import { trpc } from "@/app/_trpc/client";
-import { TransactionsList } from "./_components/transacrions-list";
+import TransactionsListSkeleton, {
+  TransactionsList,
+} from "./_components/transacrions-list";
 import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TransactionPage = () => {
   const router = useRouter();
@@ -12,7 +15,7 @@ const TransactionPage = () => {
     trpc.transactions.getUserTransactions.useQuery();
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <TransactionPageSkeleton />;
   }
 
   const onClick = () => {
@@ -38,7 +41,7 @@ const TransactionPage = () => {
         </div>
       ) : (
         <>
-          <div className="w-full lg:w-1/2 border-b-4 lg:border-r-4 lg:border-b-0 border-gray-800 overflow-y-auto mb-4 lg:mb-0 lg:pr-6">
+          <div className="w-full lg:w-1/2 border-b-4 lg:border-r-4 lg:border-b-0 border-gray-800 overflow-y-auto pb-4 lg:pb-0 mb-4 lg:mb-0 lg:pr-6">
             {data.userOrders.length === 0 ? (
               <div>No order found!</div>
             ) : (
@@ -70,6 +73,27 @@ const TransactionPage = () => {
           </div>
         </>
       )}
+    </div>
+  );
+};
+
+const TransactionPageSkeleton = () => {
+  return (
+    <div className="w-full p-6 flex flex-col lg:flex-row">
+      <div className="w-full lg:w-1/2 border-b-4 lg:border-r-4 lg:border-b-0 border-gray-800 overflow-y-auto mb-4 lg:mb-0 lg:pr-6 space-y-4">
+        <div className="w-full flex flex-col gap-y-2">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-4 w-52" />
+        </div>
+        <TransactionsListSkeleton />
+      </div>
+      <div className="pl-0 lg:px-6 w-full lg:w-1/2 space-y-4">
+        <div className="w-full flex flex-col gap-y-2">
+          <Skeleton className="h-8 w-32" />
+          <Skeleton className="h-4 w-52" />
+        </div>
+        <TransactionsListSkeleton />
+      </div>
     </div>
   );
 };
