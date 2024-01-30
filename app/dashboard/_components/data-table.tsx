@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -126,6 +127,19 @@ export function DataTable<TData, TValue>({
         >
           Next
         </Button>
+      </div>
+    </div>
+  );
+}
+
+export function DataTableSkeleton() {
+  return (
+    <div className="w-full flex flex-col gap-y-4 mt-4">
+      <Skeleton className="h-10 max-w-sm" />
+      <Skeleton className="w-full h-80" />
+      <div className="w-full flex items-center justify-end gap-x-2">
+        <Skeleton className="h-9 w-20" />
+        <Skeleton className="h-9 w-16" />
       </div>
     </div>
   );
