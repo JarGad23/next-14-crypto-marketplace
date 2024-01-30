@@ -17,7 +17,8 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (error: any) {
-    return new NextResponse(`Webhook Error ${error.message}`, { status: 500 });
+    console.error(`Webhook Error: ${error.message}`);
+    return new NextResponse(`Webhook Error ${error.message}`, { status: 200 });
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
@@ -32,7 +33,6 @@ export async function POST(req: Request) {
         status: 400,
       });
     }
-
     const existingTransaction = await db.transaction.findFirst({
       where: { id: transactionId },
     });
@@ -120,21 +120,22 @@ export async function POST(req: Request) {
         transactionState: "PAID",
       },
     });
+    return new NextResponse(null, { status: 200 });
   } else {
-    await db.transaction.update({
-      where: {
-        id: transactionId,
-      },
-      data: {
-        transactionState: "DENIED",
-      },
-    });
+    if (transactionId) {
+      await db.transaction.update({
+        where: {
+          id: transactionId,
+        },
+        data: {
+          transactionState: "DENIED",
+        },
+      });
+    }
 
     return new NextResponse(
       `Webhook Error: Unhandled event type ${event.type}`,
       { status: 200 }
     );
   }
-
-  return new NextResponse(null, { status: 200 });
 }
