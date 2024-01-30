@@ -1,16 +1,15 @@
+"use client";
+
 import { ShoppingCart, TrendingUp, WalletIcon } from "lucide-react";
 import { DashboardCard } from "./_components/dashboard-card";
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
-
-const data = [
-  {
-    name: "Name",
-    price: 10,
-  },
-];
+import { trpc } from "../_trpc/client";
 
 const DashboardPage = () => {
+  const { data, isError, isLoading } =
+    trpc.transactions.getSalesDataForTable.useQuery();
+
   return (
     <div className="w-full p-12 flex flex-col gap-y-8">
       <div className="w-full grid gird-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -37,7 +36,11 @@ const DashboardPage = () => {
         />
       </div>
       <div className="w-full">
-        <DataTable columns={columns} data={data} />
+        {isError || data === undefined ? (
+          <div>Something went wrong</div>
+        ) : (
+          <DataTable columns={columns} data={data} />
+        )}
       </div>
     </div>
   );
