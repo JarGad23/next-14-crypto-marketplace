@@ -10,6 +10,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TransactionsListProps {
   data: ({
@@ -90,3 +91,31 @@ export const TransactionsList = ({ data }: TransactionsListProps) => {
     </ul>
   );
 };
+
+export default function TransactionsListSkeleton() {
+  return (
+    <div className="w-full flex flex-col space-y-4 overflow-hidden">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="w-full h-[282px] flex flex-col p-6 border-2 rounded-md"
+        >
+          <div className="w-full flex items-center justify-between mt-2">
+            <div className="flex flex-col space-y-1">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+            <Skeleton className="h-20 w-20 rounded-full aspect-square" />
+          </div>
+          <div className="flex flex-col space-y-2 mt-6">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-6 w-40" />
+          </div>
+          <Skeleton className="h-8 w-full lg:w-[400px] mt-2" />
+          <Skeleton className="rounded-md h-24 w-full mt-2" />
+        </div>
+      ))}
+    </div>
+  );
+}
