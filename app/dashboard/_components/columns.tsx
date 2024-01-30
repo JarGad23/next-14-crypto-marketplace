@@ -2,24 +2,32 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
+export type Sale = {
+  name: string;
+  quantity: number;
+  total: number;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Sale>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "name",
+    header: "Name",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
+    accessorKey: "quantity",
     header: "Amount",
+  },
+  {
+    accessorKey: "total",
+    header: () => <div>Total Price</div>,
+    cell: ({ row }) => {
+      const total = parseFloat(row.getValue("total"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(total);
+
+      return <div className="font-medium">{formatted}</div>;
+    },
   },
 ];
