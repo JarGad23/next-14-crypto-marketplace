@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 const TransactionPage = () => {
   const router = useRouter();
@@ -43,7 +44,18 @@ const TransactionPage = () => {
         <>
           <div className="w-full lg:w-1/2 border-b-4 lg:border-r-4 lg:border-b-0 border-gray-800 overflow-y-auto pb-4 lg:pb-0 mb-4 lg:mb-0 lg:pr-6">
             {data.userOrders.length === 0 ? (
-              <div>No order found!</div>
+              <div className="h-[calc(100vh-140px)] w-full flex flex-col items-center justify-center gap-y-2">
+                <h3 className="text-xl font-semibold">No orders found!</h3>
+                <span>
+                  You can buy some tokens{" "}
+                  <Link
+                    className="text-primary font-semibold"
+                    href="/dashboard/browse"
+                  >
+                    here
+                  </Link>
+                </span>
+              </div>
             ) : (
               <div className="w-full flex flex-col gap-y-4">
                 <div>
@@ -58,7 +70,18 @@ const TransactionPage = () => {
           </div>
           <div className="pl-0 lg:px-6 w-full lg:w-1/2">
             {data.userSales.length === 0 ? (
-              <div>No sales found!</div>
+              <div className="h-[calc(100vh-140px)] w-full flex flex-col items-center justify-center gap-y-2">
+                <h3 className="text-xl font-semibold">No sales found!</h3>
+                <span>
+                  You can sell your tokens{" "}
+                  <Link
+                    className="text-primary font-semibold"
+                    href="/dashboard/wallet"
+                  >
+                    here
+                  </Link>
+                </span>
+              </div>
             ) : (
               <div className="w-full flex flex-col gap-y-4">
                 <div>
