@@ -23,7 +23,7 @@ const SalesPage = () => {
   return (
     <div className="p-6 flex flex-col">
       <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold">Sales 🤑</h2>
+        <h2 className="text-4xl font-bold">Sales</h2>
         <p className="text-muted-foreground">
           Here you can manage your current selling tokens
         </p>
@@ -64,7 +64,7 @@ const SalesPage = () => {
                   <Ghost className="h-10 w-10 ml-2" />
                 </div>
                 <span className="text-xl text-muted-foreground">
-                  Go to your
+                  Go to your{" "}
                   <Link
                     href="/dashboard/wallet"
                     className="text-primary font-semibold"
