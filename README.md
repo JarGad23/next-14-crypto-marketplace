@@ -4,7 +4,7 @@ Welcome to **Next Crypto**, a marketplace for virtual tokens where users can cre
 
 ## 🌐 Explore Online
 
-Visit my portfolio live [here](https://next-crypto-marketplace.vercel.app).
+Visit marketplace live [here](https://next-crypto-marketplace.vercel.app).
 
 ## 🚀 Technologies Used
 
