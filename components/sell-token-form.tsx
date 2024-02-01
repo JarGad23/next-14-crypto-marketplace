@@ -53,7 +53,6 @@ export const SellTokenForm = ({
     defaultValues: {
       name,
       price,
-      quantityForSale: NaN,
       userQuantityOfToken,
     },
   });

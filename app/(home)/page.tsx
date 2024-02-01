@@ -30,8 +30,8 @@ export default function Home() {
             other users.
           </h1>
           <p className="text-lg text-muted-foreground">
-            Use our user friendly dashboard to manage your token. Go to browse
-            to search for tokens created by other users .Create a free account
+            Use our user friendly dashboard to manage your tokens. Go to browse
+            and search for tokens created by other users. Create a free account
             to get access to all presented benefits and more.
           </p>
           {user && user.userId ? (
@@ -62,14 +62,14 @@ export default function Home() {
           <Card
             title="Sell"
             icon={CircleDollarSign}
-            description="You can sell your coint that you have created. We make selling coins super easy, you just need to turn coin for selling in seller dashboard. It's just that easy we take care about rest"
+            description="You can sell your created token. We make selling coins super easy, you just need to turn token for selling in seller dashboard. It's just that easy we take care about rest."
             href="/dashboard/sell"
             label="Sell tokens"
           />
           <Card
             title="Buy"
             icon={ShoppingCart}
-            description="You can safely and easy buy token created by onther users. You can simply browse the most popular tokens and also search them through the name."
+            description="You can safely and easy buy tokens created by onther users. You can simply browse the most popular tokens and also search them through the name."
             href="/dashboard/browse"
             label="Buy token"
           />
