@@ -19,7 +19,7 @@ export const Navbar = async ({
   const user = await currentUser();
 
   return (
-    <nav className="sticky top-0 h-20 border-b bg-neutral-100 dark:bg-neutral-900 shadow-md">
+    <nav className="sticky top-0 h-20 border-b bg-neutral-100 dark:bg-neutral-900 shadow-md z-50">
       <div
         className={cn(
           "h-full w-full mx-auto flex items-center gap-x-2 px-4",
