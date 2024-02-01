@@ -53,12 +53,10 @@ export const CreateTokenForm = () => {
   });
 
   useEffect(() => {
-    if (imageUrl) {
-      if (form.formState.isValid) {
-        setValidForm(true);
-      }
+    if (imageUrl !== "" && form.formState.isValid) {
+      setValidForm(true);
     }
-  }, [imageUrl, form.formState, validForm]);
+  }, [imageUrl, form.formState.isValid, validForm]);
 
   const onSubmit = (values: z.infer<typeof createTokenSchema>) => {
     createToken({ ...values, imageUrl });
@@ -152,6 +150,7 @@ export const CreateTokenForm = () => {
                     <FormControl>
                       <div className="dark:border-4 border-dashed">
                         <FileUpload
+                          {...field}
                           endpoint="tokenImage"
                           onChange={(url) => {
                             if (url) {
