@@ -165,7 +165,7 @@ export const TokenCard = ({
             src={token.imageUrl || ""}
             width="80"
             height="80"
-            className="rounded-full aspect-square"
+            className="rounded-full aspect-square object-cover"
           />
         </div>
       </CardHeader>
