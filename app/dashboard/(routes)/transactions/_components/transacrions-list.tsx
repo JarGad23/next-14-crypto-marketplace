@@ -11,14 +11,18 @@ import { format } from "date-fns";
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TransactionDetailsModal } from "@/components/transaction-details-modal";
 
 interface TransactionsListProps {
   data: ({
     token: Token;
   } & Transaction)[];
+  mode: "ORDERS" | "SALES";
 }
 
-export const TransactionsList = ({ data }: TransactionsListProps) => {
+export const TransactionsList = ({ data, mode }: TransactionsListProps) => {
+  const label = mode === "ORDERS" ? "Bought" : "Sold";
+
   return (
     <ul className="w-full space-y-4">
       {data.map((item) => (
@@ -75,15 +79,21 @@ export const TransactionsList = ({ data }: TransactionsListProps) => {
               </div>
               <div className="w-full flex items-center ">
                 <p className="border-r-2 border-gray-400 pr-2">
-                  Amount of bought tokens:{" "}
+                  Amount of {label} tokens:{" "}
                   <span className="font-semibold">{item.quantity}</span>
                 </p>
                 <p className="pl-2">
                   Price per one token:{" "}
-                  <span className="font-semibold">{item.token.price}</span>
+                  <span className="font-semibold">
+                    {formatPrice(item.token.price)}
+                  </span>
                 </p>
               </div>
-              <Button variant="secondary">See more transaction details</Button>
+              <TransactionDetailsModal mode={mode} transaction={item}>
+                <Button variant="secondary">
+                  See more transaction details
+                </Button>
+              </TransactionDetailsModal>
             </CardContent>
           </Card>
         </li>

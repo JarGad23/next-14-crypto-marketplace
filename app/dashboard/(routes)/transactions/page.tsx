@@ -52,7 +52,7 @@ const TransactionPage = () => {
                     Here you can find your recent orders
                   </p>
                 </div>
-                <TransactionsList data={data.userOrders} />
+                <TransactionsList data={data.userOrders} mode="ORDERS" />
               </div>
             )}
           </div>
@@ -67,7 +67,7 @@ const TransactionPage = () => {
                     Here you can find your recent sales
                   </p>
                 </div>
-                <TransactionsList data={data.userSales} />
+                <TransactionsList data={data.userSales} mode="SALES" />
               </div>
             )}
           </div>
