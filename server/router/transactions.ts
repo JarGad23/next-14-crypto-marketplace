@@ -19,6 +19,9 @@ export const transactionsRouter = router({
       include: {
         token: true,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const userOrders = await db.transaction.findMany({
@@ -27,6 +30,9 @@ export const transactionsRouter = router({
       },
       include: {
         token: true,
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
 
