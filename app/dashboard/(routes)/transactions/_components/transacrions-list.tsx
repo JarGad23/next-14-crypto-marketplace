@@ -26,7 +26,7 @@ export const TransactionsList = ({ data, mode }: TransactionsListProps) => {
   return (
     <ul className="w-full space-y-4">
       {data.map((item) => (
-        <li className="w-full">
+        <li className="w-full" key={item.id}>
           <Card className="w-full">
             <CardHeader className="w-full">
               <div className="flex flex-col gap-y-2">
