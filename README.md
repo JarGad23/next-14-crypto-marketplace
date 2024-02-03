@@ -58,6 +58,7 @@ Visit marketplace live [here](https://next-crypto-marketplace.vercel.app).
 ## Stripe Payments 💳
 
 To test Stripe payments, use the following test card number: `4242 4242 4242 4242`.
+Stripe is in test mode here so you can fill rest of your information with fake data.
 
 ## Features 🌟
 
