@@ -20,7 +20,7 @@ Visit marketplace live [here](https://next-crypto-marketplace.vercel.app).
 1. **Clone this repository:**
 
     ```bash
-    git clone [https://github.com/JarGad23/next-14-crypto-marketplace]
+    git clone https://github.com/JarGad23/next-14-crypto-marketplace
     ```
 
 2. **Navigate to the project directory:**
